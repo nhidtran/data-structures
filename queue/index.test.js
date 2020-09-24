@@ -29,6 +29,5 @@ describe('Queue', () => {
         q.enqueue(2);
         expect(q.peek().data).toEqual(1);
         expect(q.peek().next.data).toEqual(2)
-        
     })
 })
