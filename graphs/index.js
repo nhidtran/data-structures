@@ -124,6 +124,10 @@ Graph.prototype = {
           }
         return acc;
       }, [])
+  },
+
+  detectCycle: function() {
+    
   }
 }
 

@@ -71,6 +71,14 @@ describe('Graph', () => {
         
         expect(g.DFS()).toEqual([ 1, 3, 6, 2, 5, 4 ]);
     })
+    // test('detectsCycle', () => {
+    //     const g = new Graph([0,1,2])
+    //     g.addConnection(0,1)
+    //     g.addConnection(1,2)
+    //     expect(g.detectCycle().toBe(false))
+    //     g.addConnection(2,0)
+    //     expect(g.detectCycle().toBe(true))
+    // })
 })
 
 

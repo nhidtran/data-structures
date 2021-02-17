@@ -1,0 +1,78 @@
+<html>
+  <div class="a" id="root">
+    <div class="b" id="b-1">
+      <div class="a" id="a-2">
+        <div class="d" id="d-1"></div>
+      </div>
+      <div class="c" id="c-1">
+        <div class="a" id="a-3">
+          <div class="d" id="d-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>
+<script>
+  function depthFirstSearch(root, className) {
+    console.log("%croot.children", "color:pink", root.children);
+    const stack = [];
+    const visited = new Set();
+    return Array.from(root.children).reduce((acc, domElem) => {
+      if (!visited.has(domElem.id)) {
+        stack.push(domElem);
+        visited.add(domElem.id);
+      }
+      while (stack.length) {
+        const nodeElement = stack.pop();
+        if (nodeElement.classList.contains(className)) {
+          acc.push(nodeElement);
+        }
+        Array.from(nodeElement.children).forEach((domElem) => {
+          if (!visited.has(domElem.id)) {
+            stack.push(domElem);
+            visited.add(domElem.id);
+          }
+        });
+      }
+      return acc;
+    }, []);
+  }
+  function breadthFirstSearch(root, className) {
+    const queue = [];
+    const visited = new Set();
+    return Array.from(root.children).reduce((acc, node) => {
+      if (!visited.has(node.id)) {
+        visited.add(node.id);
+        queue.push(node);
+      }
+      while (queue.length) {
+        const node = queue.shift();
+        if (node.classList.contains(className)) acc.push(node);
+        Array.from(node.children).forEach((innerNode) => {
+          if (!visited.has(innerNode.id)) {
+            visited.add(innerNode.id);
+            queue.push(innerNode);
+          }
+        });
+      }
+      return acc;
+    }, []);
+  }
+
+  function DFS(root, className) {
+
+  }
+
+  function DFSHelper(root, className, arr) {
+    if (!root) return arr;
+    if (root.classList.contains(className)) arr.push(root)
+    
+  }
+
+  /****************/
+  // how to print out elements with class d
+  const root = document.getElementById("root", "d");
+  console.log("%cDFS", "color:pink", depthFirstSearch(root, "d"));
+  console.log("%cBFS", "color:aqua", breadthFirstSearch(root, "d"));
+  /****************/
+</script>
