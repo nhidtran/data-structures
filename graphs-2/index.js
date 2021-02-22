@@ -115,7 +115,64 @@ function shortestDistMaze(arr = []) {
   return arr;
 }
 
+function shortestDistSourceDest(arr) {
+  function getNeighbors({ x, y }) {
+    const top = x > 0 ? { x: x - 1, y } : null;
+    const bottom = x < arr.length - 1 ? { x: x + 1, y } : null;
+    const left = y > 0 ? { x, y: y - 1 } : null;
+    const right = y < arr[x].length ? { x, y: y + 1 } : null;
+    return [top, bottom, left, right].filter(
+      (elem) =>
+        elem !== null &&
+        (arr[elem.x][elem.y] == "s" || arr[elem.x][elem.y] == "*") &&
+        !visited.has(`[${elem.x},${elem.y}]`)
+    );
+  }
+  const visited = new Set();
+  let queue1 = [];
+  let queue2 = [];
+
+  // traverse array, push the destination coordinate into the queue
+  for (let i = 0; i < arr.length; ++i) {
+    for (let j = 0; j < arr[i].length; ++j) {
+      if (arr[i][j] == "d") {
+        queue1.push({ x: i, y: j });
+        visited.add(`[${i},${j}]`);
+        break;
+      }
+    }
+  }
+
+  // keep count of steps. Incrememnt count everytime we search cor an elements enighbors
+  let count = 0;
+  // while queue is not empty, remove a element from the queue
+  // find valid neighbors
+  while (queue1.length) {
+    queue2 = [...queue1];
+    queue1 = [];
+    while (queue2.length) {
+      const elem = queue2.shift();
+      if (arr[elem.x][elem.y] == "s") {
+        return count;
+      }
+      if (!visited.has(`[${elem.x},${elem.y}]`)) {
+        visited.add(`[${elem.x},${elem.y}]`);
+      }
+
+      let neighbors = getNeighbors(elem);
+      neighbors.forEach((neighbor) => {
+        if (!visited.has(`[${neighbor.x},${neighbor.y}]`)) {
+          visited.add(`[${neighbor.x},${neighbor.y}]`);
+          queue1.push({ x: neighbor.x, y: neighbor.y });
+        }
+      });
+    }
+    ++count;
+  }
+}
+
 module.exports = {
   minPathMatrix,
   shortestDistMaze,
+  shortestDistSourceDest,
 };
