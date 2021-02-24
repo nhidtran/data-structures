@@ -1,4 +1,5 @@
 const {
+  floodFill,
   minPathMatrix,
   shortestDistSourceDest,
   shortestDistMaze,
@@ -35,10 +36,9 @@ test("Find shortest distance of every cell from landmine in a Maze", () => {
     [2, 1, 0, 1, 2],
     [3, -1, -1, 0, 1],
   ];
-  console.log("%cshortest dist", "color:pink", shortestDistMaze(arr));
   expect(shortestDistMaze(arr)).toEqual(output);
 });
-test.only("find the shortest distance from a source cell to a destination cell, only going from left to right and accessible coordinates", () => {
+test("find the shortest distance from a source cell to a destination cell, only going from left to right and accessible coordinates", () => {
   const arr = [
     ["0", "*", "0", "s"],
     ["*", "0", "*", "*"],
@@ -47,3 +47,41 @@ test.only("find the shortest distance from a source cell to a destination cell, 
   ];
   expect(shortestDistSourceDest(arr)).toEqual(6);
 });
+// test("count the number of islands", () => {
+//   const arr = [
+//     [1, 1, 0, 0, 0],
+//     [0, 1, 0, 0, 1],
+//     [1, 0, 0, 1, 1],
+//     [0, 0, 0, 0, 0],
+//     [1, 0, 1, 0, 1],
+//   ];
+//   expect(countIslands(arr)).toEqual(5);
+// });
+test("flood fill algorithm", () => {
+  // start coordinate, target color and replacement color
+  const arr = [
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 0, 0],
+    [1, 0, 0, 1, 1, 0, 1, 1],
+    [1, 2, 2, 2, 2, 0, 1, 0],
+    [1, 1, 1, 2, 2, 0, 1, 0],
+    [1, 1, 1, 2, 2, 2, 2, 0],
+    [1, 1, 1, 1, 1, 2, 1, 1],
+    [1, 1, 1, 1, 1, 2, 2, 1],
+  ];
+  expect(floodFill(arr, { x: 4, y: 4 }, 3)).toEqual([
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 0, 0],
+    [1, 0, 0, 1, 1, 0, 1, 1],
+    [1, 3, 3, 3, 3, 0, 1, 0],
+    [1, 1, 1, 3, 3, 0, 1, 0],
+    [1, 1, 1, 3, 3, 3, 3, 0],
+    [1, 1, 1, 1, 1, 3, 1, 1],
+    [1, 1, 1, 1, 1, 3, 3, 1],
+  ]);
+});
+
+// 4,4
+// 3,4,
+// 5,4
+// 3,4

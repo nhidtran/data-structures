@@ -171,7 +171,54 @@ function shortestDistSourceDest(arr) {
   }
 }
 
+function floodFill(arr, coor, newColor) {
+  function getNeighbors(node, initialColor) {
+    const { x, y } = node;
+
+    const top = x > 0 ? { x: x - 1, y, color: arr[x - 1][y] } : null;
+    const bottom =
+      x < arr.length - 1 ? { x: x + 1, y, color: arr[x + 1][y] } : null;
+    const left = y > 0 ? { x, y: y - 1, color: arr[x][y - 1] } : null;
+    const right =
+      y < arr[x].length ? { x, y: y + 1, color: arr[x][y + 1] } : null;
+    return [top, bottom, left, right].filter(
+      (node) => node != null && node.color == initialColor
+    );
+  }
+
+  const visited = new Set();
+  let queue = [];
+  let queue2 = [];
+  const initialColor = arr[coor.x][coor.y];
+
+  queue.push(coor);
+
+  while (queue.length) {
+    queue2 = [...queue];
+    queue = [];
+    while (queue2.length) {
+      const node = queue2.shift();
+      if (!visited.has(`[${node.x},${node.y}]`)) {
+        visited.add(`[${node.x},${node.y}]`);
+      }
+      arr[node.x][node.y] = newColor;
+
+      let neighbors = getNeighbors(node, initialColor);
+      neighbors.forEach((neighbor) => {
+        if (!visited.has(`[${neighbor.x},${neighbor.y}]`)) {
+          visited.add(`[${neighbor.x},${neighbor.y}]`);
+          queue.push({ x: neighbor.x, y: neighbor.y });
+        }
+      });
+    }
+  }
+  return arr;
+}
+
+//4,3
+
 module.exports = {
+  floodFill,
   minPathMatrix,
   shortestDistMaze,
   shortestDistSourceDest,
